@@ -6,14 +6,14 @@ start-frontend:
 
 setup:
 	composer install
-	cp -n .env.example .env
-	php artisan key:gen --ansi
-	touch database/database.sqlite
-	php artisan migrate
-	php artisan db:seed
-	npm ci
-	npm run build
-	make ide-helper
+	#cp -n .env.example .env
+	#php artisan key:gen --ansi
+	#touch database/database.sqlite
+	#php artisan migrate
+	#php artisan db:seed
+	#npm ci
+	#npm run build
+	#make ide-helper
 
 watch:
 	npm run watch

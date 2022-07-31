@@ -3,9 +3,7 @@
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 
-// phpcs:disable
 define('LARAVEL_START', microtime(true));
-// phpcs:enable
 
 /*
 |--------------------------------------------------------------------------

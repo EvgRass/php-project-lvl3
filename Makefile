@@ -37,7 +37,13 @@ deploy:
 	git push heroku
 
 lint:
-	composer phpcs
+	composer exec --verbose phpcs -- --standard=PSR12 public
+
+ide-helper:
+	php artisan ide-helper:eloquent
+	php artisan ide-helper:gen
+	php artisan ide-helper:meta
+	php artisan ide-helper:mod -n
 
 lint-fix:
 	composer phpcbf

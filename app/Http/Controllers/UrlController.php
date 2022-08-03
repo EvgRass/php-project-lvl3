@@ -16,10 +16,12 @@ class UrlController extends Controller
      */
     public function index()
     {
-        $urls = DB::table('urls')->orderBy('id', 'asc')->get();
+        $urls = DB::table('urls')
+                        ->orderBy('id')
+                        ->get();
         // $checks = DB::table('url_checks')->orderBy('url_id', 'asc')->orderBy('created_at', 'desc')->distinct('url_id')->get();
         // $lastCheck = $checks->keyBy('url_id');
-        return view('urlsList', compact('urls'));
+        return view('urls.index', compact('urls'));
     }
 
     /**
@@ -43,8 +45,8 @@ class UrlController extends Controller
         $url = $request->input('url');
 
         $validator = Validator::make($url, [
-            'name' => 'required|url|max:255'
-        ]);
+                        'name' => 'required|url|max:255'
+                    ]);
         
         if ($validator->fails()) {
             flash('Некорректный адрес сайта!')->error();
@@ -52,18 +54,21 @@ class UrlController extends Controller
         }
 
         $urlData = parse_url(strtolower($url['name']));
-        $host = "{$urlData['scheme']}://{$urlData['host']}";
+        $newUrl = "{$urlData['scheme']}://{$urlData['host']}";
         
-        $url = DB::table('urls')->where('name', $host)->first();
+        $url = DB::table('urls')
+                    ->where('name', $newUrl)
+                    ->first();
 
         if (!is_null($url)) {
             flash("Страница уже существует")->info();
             $id = $url->id;
         } else {
-            $id = DB::table('urls')->insertGetId([
-                'name' => $host,
-                'created_at' => Carbon::now()
-            ]);
+            $id = DB::table('urls')
+                        ->insertGetId([
+                            'name' => $newUrl,
+                            'created_at' => Carbon::now()
+                        ]);
             flash('Сайт успешно добавлен!')->success();
         }
 
@@ -79,7 +84,7 @@ class UrlController extends Controller
     public function show($id)
     {
         $url = DB::table('urls')->find($id);
-        return view('urlInfo', compact('url'));
+        return view('urls.show', compact('url'));
     }
 
     /**

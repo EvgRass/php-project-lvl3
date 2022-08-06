@@ -17,21 +17,14 @@ class UrlController extends Controller
     public function index()
     {
         $urls = DB::table('urls')
-                        ->orderBy('id')
-                        ->get();
-        // $checks = DB::table('url_checks')->orderBy('url_id', 'asc')->orderBy('created_at', 'desc')->distinct('url_id')->get();
-        // $lastCheck = $checks->keyBy('url_id');
-        return view('urls.index', compact('urls'));
-    }
+                        ->select('urls.id', 'urls.name', DB::raw('max(url_checks.created_at) as last_check'),
+                                    'url_checks.status_code')
+                            ->leftJoin('url_checks', 'urls.id', '=', 'url_checks.url_id')
+                            ->groupBy('urls.name', 'urls.id', 'url_checks.status_code')
+                            ->orderBy('urls.id')
+                            ->get();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return view('urls.index', compact('urls'));
     }
 
     /**
@@ -84,40 +77,7 @@ class UrlController extends Controller
     public function show($id)
     {
         $url = DB::table('urls')->find($id);
-        return view('urls.show', compact('url'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $checks = DB::table('url_checks')->where('url_id', $id)->get();
+        return view('urls.show', compact('url', 'checks'));
     }
 }

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UrlController;
+use App\Http\Controllers\UrlCheckController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,4 +18,10 @@ Route::get('/', function () {
     return view('main');
 })->name('main');
 
-Route::resource('urls', UrlController::class);
+Route::resource('urls', UrlController::class)
+        ->only(['index', 'store', 'show']);
+
+Route::resource('urls.checks', UrlCheckController::class)
+        ->shallow()
+        ->only(['store'])
+        ->parameters(['urls' => 'url_id']);

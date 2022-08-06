@@ -13,7 +13,11 @@ class UrlControllerTest extends TestCase
     {
         parent::setUp();
         DB::table('urls')->insert([
-            ['name' => "https://test.ru", 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]
+            [
+                'name' => "https://test.ru",
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ]
         ]);
     }
 

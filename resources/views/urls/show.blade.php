@@ -10,7 +10,7 @@
         <table class="table table-bordered table-hover text-nowrap">
             <tr>
                 <td>ID</td>
-                <td>1</td>
+                <td>{{$url->id}}</td>
             </tr>
             <tr>
                 <td>Имя</td>
@@ -23,7 +23,7 @@
         </table>
     </div>
     <h2 class="mt-5 mb-3">Проверки</h2>
-    <form method="post" action="/urls/1/checks">
+    <form method="post" action="/urls/{{$url->id}}/checks">
         @csrf           
         <input type="submit" class="btn btn-primary" value="Запустить проверку">
     </form>
@@ -36,14 +36,16 @@
             <th>description</th>
             <th>Дата создания</th>
         </tr>
+        @foreach ($checks as $check)
         <tr>
-            <td>1</td>
-            <td>200</td>
-            <td>Online pro...</td>
-            <td>Programming education: online...</td>
-            <td>Live online community of progr...</td>
-            <td>2022-08-02 16:37:54</td>
+            <td>{{$check->id}}</td>
+            <td>{{$check->status_code}}</td>
+            <td>{{$check->h1}}</td>
+            <td>{{$check->title}}</td>
+            <td>{{$check->description}}</td>
+            <td>{{$check->created_at}}</td>
         </tr>
+        @endforeach
     </table>
 </div>
 

@@ -30,8 +30,8 @@ class UrlController extends Controller
 
         $urls = DB::table('url_checks')
                         ->select(
-                            'urls.id',
-                            'urls.name'
+                            'url_id',
+                            'status_code'
                         )
                         ->get();
 dump($urls);

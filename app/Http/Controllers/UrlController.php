@@ -18,9 +18,9 @@ class UrlController extends Controller
     {
         $urls = DB::table('urls')
                         ->select('urls.id', 'urls.name', DB::raw('max(url_checks.created_at) as last_check'),
-                                    'url_checks.status_code')
+                            DB::raw('max(url_checks.status_code) as status_code'))
                             ->leftJoin('url_checks', 'urls.id', '=', 'url_checks.url_id')
-                            ->groupBy('urls.name', 'urls.id', 'url_checks.status_code')
+                            ->groupBy('urls.name', 'urls.id')
                             ->orderBy('urls.id')
                             ->get();
 

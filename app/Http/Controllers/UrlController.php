@@ -26,7 +26,7 @@ class UrlController extends Controller
                         ->leftJoin('url_checks', 'urls.id', '=', 'url_checks.url_id')
                         ->groupBy('urls.name', 'urls.id')
                         ->orderBy('urls.id')
-                        ->get();
+                        ->paginate(15);
 
         return view('urls.index', compact('urls'));
     }
@@ -81,7 +81,10 @@ class UrlController extends Controller
     public function show($id)
     {
         $url = DB::table('urls')->find($id);
-        $checks = DB::table('url_checks')->where('url_id', $id)->get();
+        $checks = DB::table('url_checks')
+                    ->where('url_id', $id)
+                    ->orderBy('id', 'desc')
+                    ->get();
         return view('urls.show', compact('url', 'checks'));
     }
 }

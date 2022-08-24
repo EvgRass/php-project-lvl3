@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
+use DiDom\Document;
 
 class UrlCheckController extends Controller
 {
@@ -23,12 +24,20 @@ class UrlCheckController extends Controller
                     ->where('id', $url_id)
                     ->first();
 
-        $status = Http::get($host->name)->status();
+        $response = Http::get($host->name);
+        $document = new Document($response->body());
+
+        $h1 = optional($document->first('h1'))->text();
+        $title = optional($document->first('title'))->text();
+        $description = optional($document->first('meta[name=description]'))->getAttribute('content');
 
         DB::table('url_checks')->insert([
             'url_id' => $url_id,
             'created_at' => Carbon::now(),
-            'status_code' => $status
+            'status_code' => $response->status(),
+            'h1' => $h1,
+            'title' => $title,
+            'description' => $description
         ]);
         flash('Страница успешно проверена')->success();
         return redirect()->route('urls.show', $url_id);

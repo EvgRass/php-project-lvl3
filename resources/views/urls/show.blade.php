@@ -40,9 +40,9 @@
         <tr>
             <td>{{ $check->id }}</td>
             <td>{{ $check->status_code }}</td>
-            <td>{{ $check->h1 }}</td>
-            <td>{{ $check->title }}</td>
-            <td>{{ $check->description }}</td>
+            <td>{{ isset($check->h1) ? mb_substr($check->h1, 0 , 20) . "..." : ""}}</td>
+            <td>{{ isset($check->title) ? mb_substr($check->title, 0 , 50) . "..." : ""}}</td>
+            <td>{{ isset($check->description) ? mb_substr($check->description, 0 , 50) . "..." : ""}}</td>
             <td>{{ $check->created_at }}</td>
         </tr>
         @endforeach

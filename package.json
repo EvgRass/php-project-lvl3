@@ -1,14 +1,8 @@
 {
     "private": true,
     "scripts": {
-        "dev": "npm run development",
-        "development": "mix",
-        "watch": "mix watch",
-        "watch-poll": "mix watch -- --watch-options-poll=1000",
-        "hot": "mix watch --hot",
-        "prod": "npm run production",
-        "production": "mix --production",
-        "postinstall": "npm run prod",
+        "dev": "vite",
+        "build": "vite build",
         "heroku-postbuild": "npm run production"
     },
     "devDependencies": {
@@ -26,6 +20,6 @@
         "npm": "8.x"
     },
     "dependencies": {
-        "watch": "^1.0.2"
+        "watch": "^0.13.0"
     }
 }

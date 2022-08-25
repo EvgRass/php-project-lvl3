@@ -44,9 +44,9 @@ class UrlController extends Controller
         $validator = Validator::make($url, [
                         'name' => 'required|url|max:255'
                     ]);
-        
+
         if ($validator->fails()) {
-            flash('Некорректный адрес сайта!')->error();
+            flash('Некорректный URL')->error();
             return redirect()->route('main');
         }
 

@@ -3,7 +3,6 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "development": "mix",
         "heroku-postbuild": "npm run production"
     },
     "devDependencies": {
@@ -17,7 +16,10 @@
         "vite": "^3.0.9"
     },
     "engines": {
-        "node": "10.x",
-        "npm": "6.x"
+        "node": "18.x",
+        "npm": "8.x"
+    },
+    "dependencies": {
+        "watch": "^1.0.2"
     }
 }

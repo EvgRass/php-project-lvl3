@@ -3,7 +3,8 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "development": "vite build",
+        "development": "vite",
+        "production": "vite build",
         "heroku-postbuild": "npm run production"
     },
     "devDependencies": {

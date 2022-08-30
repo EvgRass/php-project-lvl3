@@ -24,9 +24,9 @@ class UrlCheckController extends Controller
 
         $host = DB::table('urls')
                     ->where('id', $url_id)
-                    ->first();
+                    ->value('name');
 
-        $response = Http::get($host->name);
+        $response = Http::get($host);
         $document = new Document($response->body());
 
         $h1 = optional($document->first('h1'))->text();

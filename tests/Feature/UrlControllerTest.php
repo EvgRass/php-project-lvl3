@@ -50,13 +50,13 @@ class UrlControllerTest extends TestCase
         $data = ['name' => ""];
         $response = $this->post(route('urls.store'), ['url' => $data]);
         $response->assertRedirect(route('main'));
-        $response->assertSessionHasNoErrors();
+        $response->assertSessionHasErrors();
         $this->assertDatabaseMissing('urls', $data);
 
         $data = ['name' => "test"];
         $response = $this->post(route('urls.store'), ['url' => $data]);
         $response->assertRedirect(route('main'));
-        $response->assertSessionHasNoErrors();
+        $response->assertSessionHasErrors();
         $this->assertDatabaseMissing('urls', $data);
     }
 }

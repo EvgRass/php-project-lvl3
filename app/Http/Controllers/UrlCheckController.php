@@ -22,32 +22,27 @@ class UrlCheckController extends Controller
         $url = DB::table('urls')->find($url_id);
         abort_unless($url, 404);
 
-        try {
-            $host = DB::table('urls')
-                        ->select('name')
-                        ->where('id', $url_id)
-                        ->first();
+        $host = DB::table('urls')
+                    ->select('name')
+                    ->where('id', $url_id)
+                    ->first();
 
-            $response = Http::get($host->name);
-            $document = new Document($response->body());
+        $response = Http::get($host->name);
+        $document = new Document($response->body());
 
-            $h1 = optional($document->first('h1'))->text();
-            $title = optional($document->first('title'))->text();
-            $description = optional($document->first('meta[name=description]'))->getAttribute('content');
+        $h1 = optional($document->first('h1'))->text();
+        $title = optional($document->first('title'))->text();
+        $description = optional($document->first('meta[name=description]'))->getAttribute('content');
 
-            DB::table('url_checks')->insert([
-                'url_id' => $url_id,
-                'created_at' => Carbon::now(),
-                'status_code' => $response->status(),
-                'h1' => $h1,
-                'title' => $title,
-                'description' => $description
-            ]);
-            flash('Страница успешно проверена')->success();
-            return redirect()->route('urls.show', $url_id);
-
-        } catch (RequestException | ConnectionException $e) {
-            flash("Error: {$e->getMessage()}")->error();
-        }
+        DB::table('url_checks')->insert([
+            'url_id' => $url_id,
+            'created_at' => Carbon::now(),
+            'status_code' => $response->status(),
+            'h1' => $h1,
+            'title' => $title,
+            'description' => $description
+        ]);
+        flash('Страница успешно проверена')->success();
+        return redirect()->route('urls.show', $url_id);
     }
 }

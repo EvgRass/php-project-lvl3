@@ -19,27 +19,35 @@ class UrlCheckController extends Controller
      */
     public function store(Request $request, int $url_id)
     {
-        $host = DB::table('urls')
-                    ->select('name')
-                    ->where('id', $url_id)
-                    ->first();
+        $url = DB::table('urls')->find($url_id);
+        abort_unless(false, 404);
 
-        $response = Http::get($host->name);
-        $document = new Document($response->body());
+        try {
+            $host = DB::table('urls')
+                        ->select('name')
+                        ->where('id', $url_id)
+                        ->first();
 
-        $h1 = optional($document->first('h1'))->text();
-        $title = optional($document->first('title'))->text();
-        $description = optional($document->first('meta[name=description]'))->getAttribute('content');
+            $response = Http::get($host->name);
+            $document = new Document($response->body());
 
-        DB::table('url_checks')->insert([
-            'url_id' => $url_id,
-            'created_at' => Carbon::now(),
-            'status_code' => $response->status(),
-            'h1' => $h1,
-            'title' => $title,
-            'description' => $description
-        ]);
-        flash('Страница успешно проверена')->success();
-        return redirect()->route('urls.show', $url_id);
+            $h1 = optional($document->first('h1'))->text();
+            $title = optional($document->first('title'))->text();
+            $description = optional($document->first('meta[name=description]'))->getAttribute('content');
+
+            DB::table('url_checks')->insert([
+                'url_id' => $url_id,
+                'created_at' => Carbon::now(),
+                'status_code' => $response->status(),
+                'h1' => $h1,
+                'title' => $title,
+                'description' => $description
+            ]);
+            flash('Страница успешно проверена')->success();
+            return redirect()->route('urls.show', $url_id);
+
+        } catch (RequestException | ConnectionException $e) {
+            flash("Error: {$e->getMessage()}")->error();
+        }
     }
 }

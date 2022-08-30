@@ -23,7 +23,6 @@ class UrlCheckController extends Controller
         abort_unless($url, 404);
 
         $host = DB::table('urls')
-                    ->select('name')
                     ->where('id', $url_id)
                     ->first();
 

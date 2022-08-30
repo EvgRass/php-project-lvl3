@@ -20,7 +20,7 @@ class UrlCheckController extends Controller
     public function store(Request $request, int $url_id)
     {
         $url = DB::table('urls')->find($url_id);
-        abort_unless(false, 404);
+        abort_unless($url, 404);
 
         try {
             $host = DB::table('urls')

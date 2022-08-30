@@ -24,8 +24,8 @@ class UrlCheckControllerTest extends TestCase
 
         DB::table('url_checks')->insert([
             [
-                'url_id' => 1, 
-                'created_at' => Carbon::now(), 
+                'url_id' => 1,
+                'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'status_code' => 200,
                 'h1' => "Test H1",

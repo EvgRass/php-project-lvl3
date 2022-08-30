@@ -19,7 +19,7 @@ class UrlController extends Controller
         $urls = DB::table('urls')
                         ->select(
                             'urls.id',
-                            'urls.name', 
+                            'urls.name',
                             DB::raw('max(url_checks.created_at) as last_check'),
                             DB::raw('max(url_checks.status_code) as status_code')
                         )
@@ -52,7 +52,7 @@ class UrlController extends Controller
 
         $urlData = parse_url(strtolower($url['name']));
         $newUrl = "{$urlData['scheme']}://{$urlData['host']}";
-        
+
         $url = DB::table('urls')
                     ->where('name', $newUrl)
                     ->first();
